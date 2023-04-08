@@ -4,18 +4,14 @@ package com.example.demo.users.service;
 import com.example.demo.users.model.Role;
 import com.example.demo.users.model.User;
 import com.example.demo.users.repository.UserRepo;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -91,7 +87,7 @@ class UserServiceTest {
         underTest.getUserByUsername(username);
         //then
         ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
-        verify(userRepo).findUserByUsername(stringArgumentCaptor.capture());
+        verify(userRepo).findByUsername(stringArgumentCaptor.capture());
 
         String result = stringArgumentCaptor.getValue();
 

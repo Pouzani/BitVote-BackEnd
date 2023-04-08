@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.FactoryBasedNavigableListAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
@@ -64,7 +63,7 @@ class UserRepoTest {
         underTest.save(user);
 
         //when
-        User result = underTest.findUserByUsername(username);
+        User result = underTest.findByUsername(username).orElseThrow();
 
         //then
         assertEquals(user,result);

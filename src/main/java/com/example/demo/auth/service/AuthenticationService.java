@@ -3,8 +3,11 @@ package com.example.demo.auth.service;
 import com.example.demo.auth.model.AuthenticationRequest;
 import com.example.demo.auth.model.AuthenticationResponse;
 import com.example.demo.config.JwtService;
+import com.example.demo.users.exceptions.UserNotFoundException;
 import com.example.demo.users.model.User;
 import com.example.demo.users.repository.UserRepo;
+import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
@@ -19,13 +23,6 @@ public class AuthenticationService {
     private final UserRepo userRepo;
     private final JwtService jwtService;
 
-    @Autowired
-    public AuthenticationService(AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, UserRepo userRepo, JwtService jwtService) {
-        this.authenticationManager = authenticationManager;
-        this.passwordEncoder = passwordEncoder;
-        this.userRepo = userRepo;
-        this.jwtService = jwtService;
-    }
 
     public AuthenticationResponse register(User user) {
         var authUser = User.builder()
@@ -50,9 +47,9 @@ public class AuthenticationService {
                 .build();
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest userData) {
+    public AuthenticationResponse authenticate(@NotNull AuthenticationRequest userData) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userData.getUsername(),userData.getPassword()));
-        var user = userRepo.findUserByUsername(userData.getUsername());
+        var user = userRepo.findByUsername(userData.getUsername()).orElseThrow(()-> new UserNotFoundException("User by username" + userData.getUsername() + "was not found"));
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse
                 .builder()

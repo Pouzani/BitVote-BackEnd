@@ -30,7 +30,7 @@ public class ForumController {
 
     @PostMapping("/add")
     public ResponseEntity<Forum> addForum(@RequestBody Forum forum){
-        return ResponseEntity.ok(this.forumService.addForum(forum));
+        return ResponseEntity.ok(this.forumService.updateForum(forum));
     }
 
     @PutMapping("/update")
@@ -40,6 +40,7 @@ public class ForumController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteForum(@PathVariable("id") Integer id){
+        forumService.deleteForum(id);
         return ResponseEntity.ok("Forum with ID: "+id+" was deleted");
     }
 }
