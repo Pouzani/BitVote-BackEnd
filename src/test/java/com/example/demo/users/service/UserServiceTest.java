@@ -1,6 +1,7 @@
 package com.example.demo.users.service;
 
 
+import com.example.demo.users.exceptions.UserNotFoundException;
 import com.example.demo.users.model.Role;
 import com.example.demo.users.model.User;
 import com.example.demo.users.repository.UserRepo;
@@ -12,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,13 +36,13 @@ class UserServiceTest {
     }
 
     @Test
-    void canFindbyUsername() {
+    void canFindByUsername() {
         String username = "test";
         //when
-        underTest.findbyUsername(username);
+        underTest.findByUsernameOrEmail(username);
         //then
         ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
-        verify(userRepo).findAllByUsernameContainingIgnoreCase(stringArgumentCaptor.capture());
+        verify(userRepo).findAllByUsernameContainingIgnoreCaseOrEmailContainingIgnoreCase(stringArgumentCaptor.capture(), stringArgumentCaptor.capture());
 
         String result = stringArgumentCaptor.getValue();
 
@@ -80,9 +82,11 @@ class UserServiceTest {
     }
 
     @Test
-    void canGetUserByUsername() {
+    void canGetUserByUsername(){
         //given
         String username = "test";
+
+        given(userRepo.existsUserByUsername(username)).willReturn(true);
         //when
         underTest.getUserByUsername(username);
         //then

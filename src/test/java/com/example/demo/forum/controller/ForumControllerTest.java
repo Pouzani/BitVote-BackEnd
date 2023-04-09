@@ -7,24 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 
 import static org.hamcrest.Matchers.aMapWithSize;
 import static org.hamcrest.Matchers.hasSize;
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.http.MediaType.TEXT_PLAIN;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -53,9 +49,9 @@ class ForumControllerTest {
     @Test
     @SqlGroup({
             @Sql(value = "classpath:empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:init/forum-data.sql", executionPhase = BEFORE_TEST_METHOD)
+            @Sql(value = "classpath:init/forum/forum-data.sql", executionPhase = BEFORE_TEST_METHOD)
     })
-    void canGetAllforums() throws Exception {
+    void canGetAllForums() throws Exception {
         this.mockMvc.perform(get("/forum"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -72,9 +68,9 @@ class ForumControllerTest {
     @Test
     @SqlGroup({
             @Sql(value = "classpath:empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:init/forum-data.sql", executionPhase = BEFORE_TEST_METHOD)
+            @Sql(value = "classpath:init/forum/forum-data.sql", executionPhase = BEFORE_TEST_METHOD)
     })
-    void searchForums() throws Exception {
+    void canSearchForums() throws Exception {
         this.mockMvc.perform(get("/forum/search?query=alicia"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -86,13 +82,13 @@ class ForumControllerTest {
 
 
     @Test
-    @WithMockUser()
+    @WithMockUser(authorities = {"USER"})
     @SqlGroup({
             @Sql(value = "classpath:empty/reset.sql", executionPhase = BEFORE_TEST_METHOD)
     })
-    void addForum() throws Exception {
+    void canAddForum() throws Exception {
         //given
-        final File jsonFile = new ClassPathResource("init/forum.json").getFile();
+        final File jsonFile = new ClassPathResource("init/forum/forum.json").getFile();
         final String forumToCreate = Files.readString(jsonFile.toPath());
         //when
         this.mockMvc.perform(post("/forum/add")
@@ -107,31 +103,32 @@ class ForumControllerTest {
     }
 
     @Test
-    @WithMockUser()
+    @WithMockUser(authorities = {"USER"})
     @SqlGroup({
-            @Sql(value = "classpath:empty/reset.sql", executionPhase = BEFORE_TEST_METHOD)
+            @Sql(value = "classpath:empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
+            @Sql(value = "classpath:init/forum/forum-data.sql", executionPhase = BEFORE_TEST_METHOD)
     })
-    void updateForum() throws Exception {
+    void canUpdateForum() throws Exception {
         //given
-        final File jsonFile = new ClassPathResource("init/forum.json").getFile();
-        final String forumToCreate = Files.readString(jsonFile.toPath());
+        final File jsonFile = new ClassPathResource("init/forum/forum-edit.json").getFile();
+        final String forumToUpdate = Files.readString(jsonFile.toPath());
         //when
         this.mockMvc.perform(put("/forum/update")
                         .contentType(APPLICATION_JSON)
-                        .content(forumToCreate))
+                        .content(forumToUpdate))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isMap())
                 .andExpect(jsonPath("$", aMapWithSize(4)));
         //then
-        assertThat(forumRepo.findAll()).hasSize(1);
+        assertThat(forumRepo.findAll()).hasSize(5);
     }
 
     @Test
-    @WithMockUser()
+    @WithMockUser(authorities = {"USER"})
     @SqlGroup({
             @Sql(value = "classpath:empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:init/forum-data.sql", executionPhase = BEFORE_TEST_METHOD)
+            @Sql(value = "classpath:init/forum/forum-data.sql", executionPhase = BEFORE_TEST_METHOD)
     })
     void deleteForum() throws Exception {
         //given

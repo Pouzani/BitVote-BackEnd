@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -23,7 +22,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/find/{username}")
     public ResponseEntity<User> getUserById(@PathVariable("username") String username){
         User user = userService.getUserByUsername(username);
         return ResponseEntity.ok(user);
@@ -37,8 +36,8 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<User>> searchUser(@RequestParam(value = "username") String username){
-        List<User> users = userService.findbyUsername(username);
+    public ResponseEntity<List<User>> searchUser(@RequestParam(value = "query") String query){
+        List<User> users = userService.findByUsernameOrEmail(query);
         return ResponseEntity.ok(users);
     }
 

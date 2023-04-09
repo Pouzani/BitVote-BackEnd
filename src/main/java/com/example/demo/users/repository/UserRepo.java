@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepo extends JpaRepository<User,Integer> {
-    Optional<List<User>> findAllByUsernameContainingIgnoreCase(String username);
+    Optional<List<User>> findAllByUsernameContainingIgnoreCaseOrEmailContainingIgnoreCase(String search1,String search2);
     Optional<User> findByUsername(String username);
     boolean existsUserByUsername(String username);
 }

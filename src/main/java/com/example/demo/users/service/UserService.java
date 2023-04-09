@@ -6,6 +6,7 @@ import com.example.demo.users.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,8 +23,8 @@ public class UserService {
         return userRepo.findAll();
     }
 
-    public List<User> findbyUsername(String username){
-        return userRepo.findAllByUsernameContainingIgnoreCase(username).orElseThrow();
+    public List<User> findByUsernameOrEmail(String search){
+        return userRepo.findAllByUsernameContainingIgnoreCaseOrEmailContainingIgnoreCase(search, search).orElse(new ArrayList<>());
     }
 
     public User updateUser(User user){
@@ -34,6 +35,11 @@ public class UserService {
        userRepo.deleteById(id);
     }
     public User getUserByUsername(String username){
-        return userRepo.findByUsername(username).orElseThrow(()-> new UserNotFoundException("User by username" + username + "was not found"));
+        if (!userRepo.existsUserByUsername(username)){
+            {
+                throw new UserNotFoundException("User by username " + username + " was not found");
+            }
+        }
+        return userRepo.findByUsername(username).orElse(new User());
     }
 }

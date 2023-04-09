@@ -17,12 +17,12 @@ public class VoteController {
         this.voteService = voteService;
     }
 
-    @GetMapping("/{name}/up")
+    @GetMapping("/count/{name}/up")
     public ResponseEntity<VoteCount> countUpVotes(@PathVariable("name") String name){
         return ResponseEntity.ok(voteService.countByCoinNameAndTypeUP(name));
     }
 
-    @GetMapping("/{name}/down")
+    @GetMapping("/count/{name}/down")
     public ResponseEntity<VoteCount> countDownVotes(@PathVariable("name") String name){
         return ResponseEntity.ok(voteService.countByCoinNameAndTypeDOWN(name));
     }
