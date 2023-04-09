@@ -49,7 +49,12 @@ public class AuthenticationService {
 
     public AuthenticationResponse authenticate(@NotNull AuthenticationRequest userData) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userData.getUsername(),userData.getPassword()));
-        var user = userRepo.findByUsername(userData.getUsername()).orElseThrow(()-> new UserNotFoundException("User by username" + userData.getUsername() + "was not found"));
+        if (!userRepo.existsUserByUsername(userData.getUsername())){
+            {
+                throw new UserNotFoundException("User by username " + userData.getUsername() + " was not found");
+            }
+        }
+        var user = userRepo.findByUsername(userData.getUsername()).orElse(new User());
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse
                 .builder()
