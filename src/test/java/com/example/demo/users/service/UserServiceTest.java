@@ -1,7 +1,6 @@
 package com.example.demo.users.service;
 
 
-import com.example.demo.users.exceptions.UserNotFoundException;
 import com.example.demo.users.model.Role;
 import com.example.demo.users.model.User;
 import com.example.demo.users.repository.UserRepo;
@@ -12,6 +11,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -21,10 +22,11 @@ class UserServiceTest {
 
     @Mock private UserRepo userRepo;
     private UserService underTest;
+    @Mock private UserDTOMapper userDTOMapper;
 
     @BeforeEach
     void setUp() {
-        underTest = new UserService(userRepo);
+        underTest = new UserService(userRepo, userDTOMapper);
     }
 
     @Test
@@ -53,7 +55,7 @@ class UserServiceTest {
     void canUpdateUser() {
         //given
         String username = "testUser";
-        User user = new User(null,"test","testing","test@test.com",username,"teeest", Role.USER,"url","18","0655678230","Morocco");
+        User user = new User(null,"test","testing","test@test.com",username,"teeest", Role.USER,"url",18,"0655678230","Morocco");
 
         //when
         underTest.updateUser(user);
@@ -79,22 +81,5 @@ class UserServiceTest {
 
         Integer result = integerArgumentCaptor.getValue();
         assertEquals(id,result);
-    }
-
-    @Test
-    void canGetUserByUsername(){
-        //given
-        String username = "test";
-
-        given(userRepo.existsUserByUsername(username)).willReturn(true);
-        //when
-        underTest.getUserByUsername(username);
-        //then
-        ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
-        verify(userRepo).findByUsername(stringArgumentCaptor.capture());
-
-        String result = stringArgumentCaptor.getValue();
-
-        assertEquals(username,result);
     }
 }

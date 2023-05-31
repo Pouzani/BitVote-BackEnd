@@ -1,30 +1,37 @@
 package com.example.demo.users.service;
 
-import com.example.demo.users.exceptions.UserNotFoundException;
+
+import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.users.model.User;
+import com.example.demo.users.model.UserResponse;
 import com.example.demo.users.repository.UserRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
 public class UserService {
     private final UserRepo userRepo;
+    private final UserDTOMapper userDTOMapper;
 
-    @Autowired
-    public UserService(UserRepo userRepo){
+
+    public UserService(UserRepo userRepo, UserDTOMapper userDTOMapper){
         this.userRepo = userRepo;
+        this.userDTOMapper = userDTOMapper;
     }
 
-    public List<User> getAllUsers(){
-        return userRepo.findAll();
+    public List<UserResponse> getAllUsers(){
+        return userRepo.findAll()
+                .stream()
+                .map(userDTOMapper).collect(Collectors.toList());
     }
 
-    public List<User> findByUsernameOrEmail(String search){
-        return userRepo.findAllByUsernameContainingIgnoreCaseOrEmailContainingIgnoreCase(search, search).orElse(new ArrayList<>());
+    public List<UserResponse> findByUsernameOrEmail(String search){
+        return userRepo.findAllByUsernameContainingIgnoreCaseOrEmailContainingIgnoreCase(search, search).orElse(List.of())
+                .stream()
+                .map(userDTOMapper).collect(Collectors.toList());
     }
 
     public User updateUser(User user){
@@ -34,12 +41,7 @@ public class UserService {
     public void deleteUser(Integer id){
        userRepo.deleteById(id);
     }
-    public User getUserByUsername(String username){
-        if (!userRepo.existsUserByUsername(username)){
-            {
-                throw new UserNotFoundException("User by username " + username + " was not found");
-            }
-        }
-        return userRepo.findByUsername(username).orElse(new User());
+    public UserResponse getUserByUsername(String username){
+        return userRepo.findByUsername(username).map(userDTOMapper).orElseThrow(() -> new UserNotFoundException("User by username " + username + " was not found"));
     }
 }

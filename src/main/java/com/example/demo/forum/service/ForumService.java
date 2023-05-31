@@ -12,7 +12,7 @@ import java.util.Optional;
 public class ForumService {
     private final ForumRepo forumRepo;
 
-    @Autowired
+
     public ForumService(ForumRepo forumRepo){
         this.forumRepo=forumRepo;
     }

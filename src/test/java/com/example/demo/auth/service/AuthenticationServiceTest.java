@@ -43,7 +43,7 @@ class AuthenticationServiceTest {
     void register() {
         //given
         String username = "testUser";
-        User user = new User(null,"test","testing","test@test.com",username,passwordEncoder.encode("teeest"), Role.USER,"url","18","0655678230","Morocco");
+        User user = new User(null,"test","testing","test@test.com",username,passwordEncoder.encode("teeest"), Role.USER,"url",18,"0655678230","Morocco");
         //when
         underTest.register(user);
         //then

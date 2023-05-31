@@ -28,6 +28,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests()
                 .requestMatchers("/forum").permitAll()
                 .requestMatchers("/forum/search").permitAll()
+                .requestMatchers("/forum/exception").permitAll()
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/vote/count/{name}/**").permitAll()
                 .and()

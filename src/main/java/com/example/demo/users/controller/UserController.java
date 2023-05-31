@@ -1,6 +1,7 @@
 package com.example.demo.users.controller;
 
 import com.example.demo.users.model.User;
+import com.example.demo.users.model.UserResponse;
 import com.example.demo.users.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,14 +18,14 @@ public class UserController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<User>> getAllUsers(){
-        List<User> users = userService.getAllUsers();
+    public ResponseEntity<List<UserResponse>> getAllUsers(){
+        List<UserResponse> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 
     @GetMapping("/find/{username}")
-    public ResponseEntity<User> getUserById(@PathVariable("username") String username){
-        User user = userService.getUserByUsername(username);
+    public ResponseEntity<UserResponse> getUserById(@PathVariable("username") String username){
+        UserResponse user = userService.getUserByUsername(username);
         return ResponseEntity.ok(user);
     }
 
@@ -36,8 +37,8 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<User>> searchUser(@RequestParam(value = "query") String query){
-        List<User> users = userService.findByUsernameOrEmail(query);
+    public ResponseEntity<List<UserResponse>> searchUser(@RequestParam(value = "query") String query){
+        List<UserResponse> users = userService.findByUsernameOrEmail(query);
         return ResponseEntity.ok(users);
     }
 

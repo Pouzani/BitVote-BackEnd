@@ -1,5 +1,6 @@
 package com.example.demo.users.exceptions;
 
+import com.example.demo.exceptions.UserNotFoundException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class VoteService {
     private final VoteRepo voteRepo;
 
-    @Autowired
+
     public VoteService(VoteRepo voteRepo) {
         this.voteRepo = voteRepo;
     }

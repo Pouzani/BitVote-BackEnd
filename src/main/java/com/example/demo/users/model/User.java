@@ -1,6 +1,9 @@
 package com.example.demo.users.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,16 +36,20 @@ public class User implements UserDetails {
     private String lastName;
 
     @Column(nullable = false)
+
+    @Email(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "email must be valid")
     private String email;
+    @NotBlank(message = "username must not be empty")
     @Column(nullable = false)
     private String username;
+    @NotBlank(message = "password must not be empty")
     @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER;
     private String imageUrl;
-    private String age;
+    private Integer age;
     private String phone;
     private String nationality;
 

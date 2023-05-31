@@ -1,5 +1,6 @@
 package com.example.demo.forum.controller;
 
+import com.example.demo.exceptions.ApiRequestException;
 import com.example.demo.forum.model.Forum;
 import com.example.demo.forum.service.ForumService;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,13 @@ public class ForumController {
     @GetMapping("")
     public ResponseEntity<List<Forum>> getAllforums(){
         return ResponseEntity.ok(this.forumService.getAllForums());
+    }
+
+    @GetMapping("/exception")
+    public ResponseEntity<List<Forum>> getAllforumsExceptin(){
+        throw new ApiRequestException(
+                "api request exception for forums hh"
+        );
     }
 
     @GetMapping("/search")
