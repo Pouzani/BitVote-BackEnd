@@ -35,10 +35,16 @@ public class UserService {
     }
 
     public User updateUser(User user){
+        if (!userRepo.existsById(user.getId())){
+            throw new UserNotFoundException("User with id " + user.getId() + " was not found");
+        }
         return userRepo.save(user);
     }
 
     public void deleteUser(Integer id){
+        if (!userRepo.existsById(id)){
+            throw new UserNotFoundException("User with id " + id + " was not found");
+        }
        userRepo.deleteById(id);
     }
     public UserResponse getUserByUsername(String username){

@@ -9,6 +9,7 @@ import com.example.demo.users.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -47,11 +48,9 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(@NotNull AuthenticationRequest userData) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userData.getUsername(),userData.getPassword()));
-        if (!userRepo.existsUserByUsername(userData.getUsername())){
-            {
-                throw new UserNotFoundException("User by username " + userData.getUsername() + " was not found");
-            }
+        try{authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userData.getUsername(),userData.getPassword()));}
+        catch (Exception e){
+            throw new BadCredentialsException("Invalid username or password");
         }
         var user = userRepo.findByUsername(userData.getUsername()).orElse(new User());
         var jwtToken = jwtService.generateToken(user);

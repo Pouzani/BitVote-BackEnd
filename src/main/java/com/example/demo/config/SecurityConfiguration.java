@@ -1,6 +1,6 @@
 package com.example.demo.config;
 
-import jakarta.servlet.Filter;
+import com.example.demo.exceptions.ApiExceptionHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,7 +46,8 @@ public class SecurityConfiguration {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFiler, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFiler, UsernamePasswordAuthenticationFilter.class)
+        ;
 
         return http.build();
     }
