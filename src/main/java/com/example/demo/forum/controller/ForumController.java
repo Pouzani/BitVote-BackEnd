@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("${api.endpoint}/forum")
+@RequestMapping("api/v1/forum")
 public class ForumController {
     private final ForumService forumService;
 
