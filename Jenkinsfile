@@ -44,7 +44,7 @@ pipeline {
                     echo "deploy the image ..."
                     def dockerCmd = "docker run -p 8082:8082 -d pihix/bitvote:1.0"
                     //On doit se connecter à dockerhub dans le serveur
-                    sshagent(['pihix-dev-server']) {
+                    sshagent(['ec2-dev-server']) {
                         sh "ssh -o StrictHostKeyChecking=no ubuntu@13.39.82.122 ${dockerCmd}"
                 }
             }
