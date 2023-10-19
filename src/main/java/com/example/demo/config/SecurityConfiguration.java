@@ -31,6 +31,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/v1/forum/exception").permitAll()
                 .requestMatchers("/api/v1/auth/**").permitAll()
                 .requestMatchers("/api/v1/vote/count/{name}/**").permitAll()
+                .requestMatchers("/").permitAll()
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/v1/users/find/{username}").hasAnyAuthority("ADMIN","USER")
