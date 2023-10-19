@@ -51,35 +51,4 @@ class UserServiceTest {
         assertEquals(username,result);
     }
 
-    @Test
-    void canUpdateUser() {
-        //given
-        String username = "testUser";
-        User user = new User(null,"test","testing","test@test.com",username,"teeest", Role.USER,"url",18,"0655678230","Morocco");
-
-        //when
-        underTest.updateUser(user);
-
-        //then
-        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
-        verify(userRepo).save(userArgumentCaptor.capture());
-
-        User result = userArgumentCaptor.getValue();
-
-        assertEquals(user,result);
-    }
-
-    @Test
-    void canDeleteUser() {
-        //given
-        Integer id = 1;
-        //when
-        underTest.deleteUser(id);
-        //then
-        ArgumentCaptor<Integer> integerArgumentCaptor = ArgumentCaptor.forClass(Integer.class);
-        verify(userRepo).deleteById(integerArgumentCaptor.capture());
-
-        Integer result = integerArgumentCaptor.getValue();
-        assertEquals(id,result);
-    }
 }

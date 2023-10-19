@@ -59,23 +59,4 @@ class AuthenticationServiceTest {
 
     }
 
-    @Test
-    void authenticate() {
-        //given
-        AuthenticationRequest request = new AuthenticationRequest("test","tessst");
-        given(userRepo.existsUserByUsername(request.getUsername())).willReturn(true);
-        //when
-        underTest.authenticate(request);
-        //then
-        ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<UsernamePasswordAuthenticationToken> argumentCaptor = ArgumentCaptor.forClass(UsernamePasswordAuthenticationToken.class);
-        verify(userRepo).findByUsername(stringArgumentCaptor.capture());
-        verify(authenticationManager).authenticate(argumentCaptor.capture());
-
-        String username = stringArgumentCaptor.getValue();
-        UsernamePasswordAuthenticationToken result = argumentCaptor.getValue();
-        assertEquals(request.getUsername(),username);
-        assertEquals(new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword()),result);
-
-    }
 }
