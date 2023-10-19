@@ -21,9 +21,9 @@ pipeline {
                 script {
                     echo "building the docker image ..."
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                        sh 'docker build -t pihix/taxi-app:1.0 .'
-                        sh "echo $PASS | docker login -u $USER --password-stdin"
-                        sh 'docker push pihix/taxi-app:1.0'
+                        sh 'sudo docker build -t pihix/taxi-app:1.0 .'
+                        sh "echo $PASS | sudo docker login -u $USER --password-stdin"
+                        sh 'sudo docker push pihix/taxi-app:1.0'
                     }
                 }
             }
