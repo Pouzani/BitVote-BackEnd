@@ -7,11 +7,20 @@ pipeline {
     }
     stages {
 
+        stage("test"){
+            steps {
+                script {
+                    echo "testing the app ..."
+                    sh 'mvn test'
+                }
+            }
+        }
+
         stage("build jar") {
             steps {
                 script {
                     echo "building the app ..."
-                    sh 'mvn package'
+                    sh 'mvn package -DskipTests'
                 }
             }
         }
