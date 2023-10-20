@@ -29,10 +29,11 @@ pipeline {
             steps {
                 script {
                     echo "building the docker image ..."
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                        sh 'docker build -t pihix/bitvote-app:1.2 .'
-                        sh "echo $PASS | docker login -u $USER --password-stdin"
-                        sh 'docker push pihix/bitvote-app:1.2'
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-repo', passwordVariable: 'PASSWORD', usernameVariable: 'USER')]) {
+                        sh 'docker build -t pihix/bitvote-app:1.3 .'
+                        sh 'docker login -u $USER -p $PASSWORD'
+                        //sh "echo $PASSWORD | docker login -u $USER --password-stdin"
+                        sh 'docker push pihix/bitvote-app:1.3'
                     }
                 }
             }
@@ -41,12 +42,19 @@ pipeline {
         stage("deploy image") {
             steps {
                 script {
-                    echo "deploy the image ..."                    
+                    echo "deploy the image ..."
+                    // Define the name of the previous Docker container
+                    def containerName = 'bitvote-container'
+
+                    // Stop the previous container if it's running
+                   // sh "ssh -o StrictHostKeyChecking=no ubuntu@13.39.82.122 docker stop ${containerName}"
+
                     // Start the new Docker container
-                    def dockerCmd = "docker run -p 8082:8082 -d pihix/bitvote-app:1.2"
+                    def dockerCmd = "docker compose down"
                     //On doit se connecter à dockerhub dans le serveur
                     sshagent(['ec2-dev-server']) {
                         sh "ssh -o StrictHostKeyChecking=no ubuntu@13.39.82.122 ${dockerCmd}"
+                        sh "docker compose up -d"
                 }
             }
         }

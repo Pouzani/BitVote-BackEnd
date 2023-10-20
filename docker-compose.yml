@@ -1,0 +1,6 @@
+version: '3'
+services:
+  myapp:
+    image: pihix/bitvote-app:1.2
+    ports:
+      - "8080:8080"
