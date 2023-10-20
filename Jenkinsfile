@@ -43,14 +43,15 @@ pipeline {
             steps {
                 script {
                     // Specify the port you want to check (e.g., 8080)
-                    def portToCheck = 8080
+                    //def portToCheck = 8080
                     
                     // Check if there's a running container on the specified port
-                    def runningContainerId = sh(script: "docker ps -q --filter \"publish=${portToCheck}/tcp\"", returnStatus: true)
+                    //sh "docker ps -q --filter \"publish=8080/tcp\""
                     
                     
-                    echo "A container is running on port ${portToCheck}. Stopping it..."
-                    sh "docker stop ${runningContainerId}"
+                    //echo "A container is running on port ${portToCheck}. Stopping it..."
+                    sh "docker stop $(docker ps -q --filter \"publish=8080/tcp\")"
+                    
                     
                     echo "deploy the image ..."
                     echo "push event ..."
