@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        // Utilisation de l'outil Maven
+        // Utilisation de l'outil Maven test
         maven 'Maven'
         dockerTool 'Docker'
     }
