@@ -51,7 +51,7 @@ pipeline {
 
                     // Start the new Docker container
                     def dockerDownCmd = "docker-compose down"
-                    def dockerUpCmd = "docker-compose up"
+                    def dockerUpCmd = "docker-compose up -d"
                     //On doit se connecter à dockerhub dans le serveur
                     sshagent(['ec2-dev-server']) {
                         sh "ssh -o StrictHostKeyChecking=no ubuntu@13.39.82.122 ${dockerDownCmd}"
