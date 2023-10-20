@@ -46,7 +46,7 @@ pipeline {
                     def portToCheck = 8080
                     
                     // Check if there's a running container on the specified port
-                    def runningContainerId = sh(script: "docker ps -q --filter \"publish=${portToCheck}/tcp\"", returnStatus: true).trim()
+                    def runningContainerId = sh(script: "docker ps -q --filter \"publish=${portToCheck}/tcp\"", returnStatus: true)
                     
                     if (runningContainerId) {
                         echo "A container is running on port ${portToCheck}. Stopping it..."
