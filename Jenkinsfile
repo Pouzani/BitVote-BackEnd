@@ -42,6 +42,7 @@ pipeline {
         stage("deploy image") {
             steps {
                 script {
+                    sh "docker compose down"
                     sh "docker compose up -d"
                     //On doit se connecter à dockerhub dans le serveur
                     sshagent(['ec2-dev-server']) {
