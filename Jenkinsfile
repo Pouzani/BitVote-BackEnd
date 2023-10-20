@@ -50,11 +50,12 @@ pipeline {
                    // sh "ssh -o StrictHostKeyChecking=no ubuntu@13.39.82.122 docker stop ${containerName}"
 
                     // Start the new Docker container
-                    def dockerCmd = "docker-compose down"
+                    def dockerDownCmd = "docker-compose down"
+                    def dockerUpCmd = "docker-compose up"
                     //On doit se connecter à dockerhub dans le serveur
                     sshagent(['ec2-dev-server']) {
-                        sh "ssh -o StrictHostKeyChecking=no ubuntu@13.39.82.122 ${dockerCmd}"
-                        sh "docker-compose up -d"
+                        sh "ssh -o StrictHostKeyChecking=no ubuntu@13.39.82.122 ${dockerDownCmd}"
+                        sh "ssh -o StrictHostKeyChecking=no ubuntu@13.39.82.122 ${dockerUpCmd}"
                 }
             }
         }
