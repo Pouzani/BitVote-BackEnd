@@ -59,6 +59,31 @@ pipeline {
                 }
             }
         }
-    }   
+    }
+
+    stage("e2e test") {
+        steps {
+            script {
+                echo "testing the app ..."
+            }
+        }
+    }
+
+    stage("deploy") {
+        steps {
+            script {
+                echo "deploy the app ..."
+                def containerName = 'bitvote-container'
+
+                def dockerDownCmd = "docker-compose down"
+                def dockerUpCmd = "docker-compose up -d"
+
+                sshagent(['ec2-dev-server']) {
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@35.180.152.72 ${dockerDownCmd}"
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@35.180.152.72 ${dockerUpCmd}"
+                }
+            }
+        }
+
 }
     }
