@@ -32,7 +32,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                         sh 'docker build -t pihix/bitvote-app:1.2 .'
                         sh "echo $PASS | docker login -u $USER --password-stdin"
-                        sh 'docker pull pihix/bitvote-app:1.2'
+                        //sh 'docker pull pihix/bitvote-app:1.2'
                         sh 'docker push pihix/bitvote-app:1.2'
                     }
                 }
@@ -50,7 +50,7 @@ pipeline {
                     
                     
                     //echo "A container is running on port ${portToCheck}. Stopping it..."
-                    sh 'docker stop $(docker ps -q --filter "publish=8080/tcp")'
+                    //sh 'docker stop $(docker ps -q --filter "publish=8080/tcp")'
                     
                     
                     echo "deploy the image ..."
