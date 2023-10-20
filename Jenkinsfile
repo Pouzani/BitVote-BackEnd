@@ -30,10 +30,10 @@ pipeline {
                 script {
                     echo "building the docker image ..."
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-repo', passwordVariable: 'PASSWORD', usernameVariable: 'USER')]) {
-                        sh 'docker build -t pihix/bitvote-app:1.3 .'
+                        sh 'docker build -t pihix/bitvote-app:1.2 .'
                         sh 'docker login -u $USER -p $PASSWORD'
                         //sh "echo $PASSWORD | docker login -u $USER --password-stdin"
-                        sh 'docker push pihix/bitvote-app:1.3'
+                        sh 'docker push pihix/bitvote-app:1.2'
                     }
                 }
             }
