@@ -30,7 +30,7 @@ class VoteServiceTest {
     void canCountByCoinNameAndTypeUP() {
         //given
         String name = "bitcoin";
-        //when  test test
+        //when  test test test
         underTest.countByCoinNameAndTypeUP(name);
         //then
         ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
