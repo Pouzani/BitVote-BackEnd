@@ -75,8 +75,8 @@ pipeline {
                 echo "deploy the app ..."
                 def containerName = 'bitvote-container'
 
-                def dockerDownCmd = "docker-compose down"
-                def dockerUpCmd = "docker-compose up -d"
+                def dockerDownCmd = "sudo docker-compose down"
+                def dockerUpCmd = "sudo docker-compose up -d"
 
                 sshagent(['ec2-dev-server']) {
                     sh "ssh -o StrictHostKeyChecking=no ubuntu@35.180.152.72 ${dockerDownCmd}"
