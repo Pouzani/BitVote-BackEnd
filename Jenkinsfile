@@ -42,6 +42,18 @@ pipeline {
         stage("deploy image") {
             steps {
                 script {
+                    // Specify the port you want to check (e.g., 8080)
+                    def portToCheck = 8080
+                    
+                    // Check if there's a running container on the specified port
+                    def runningContainerId = sh(script: "docker ps -q --filter \"publish=${portToCheck}/tcp\"", returnStatus: true).trim()
+                    
+                    if (runningContainerId) {
+                        echo "A container is running on port ${portToCheck}. Stopping it..."
+                        sh "docker stop ${runningContainerId}"
+                    } else {
+                        echo "No container found on port ${portToCheck}."
+                    }
                     echo "deploy the image ..."
                     echo "push event ..."
                     // Start the new Docker container
