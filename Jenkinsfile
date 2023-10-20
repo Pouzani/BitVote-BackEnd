@@ -61,13 +61,13 @@ pipeline {
         }
     }
 
-    stage("e2e test") {
-        steps {
-            script {
-                echo "testing the app ..."
+        stage("e2e test") {
+            steps {
+                script {
+                    echo "testing the app ..."
+                }
             }
         }
-    }
 
     stage("deploy") {
         steps {
@@ -86,4 +86,5 @@ pipeline {
         }
 
     }
+}
 }
