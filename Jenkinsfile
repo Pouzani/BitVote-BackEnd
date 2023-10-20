@@ -51,6 +51,16 @@ pipeline {
                     
                     //echo "A container is running on port ${portToCheck}. Stopping it..."
                     //sh 'docker stop $(docker ps -q --filter "publish=8080/tcp")'
+                    sh '''
+                        docker ps -q --filter "publish=8080/tcp"
+                        if [ $? -eq 0 ]; then
+                            echo "Found running containers on port 8080. Stopping them..."
+                            docker stop $(docker ps -q --filter "publish=8080/tcp")
+                        else
+                            echo "No containers found on port 8080."
+                        fi
+                        '''
+
                     
                     
                     echo "deploy the image ..."
