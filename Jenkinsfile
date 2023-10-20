@@ -42,7 +42,8 @@ pipeline {
         stage("deploy image") {
             steps {
                 script {
-                    echo "deploy the image ..."                    
+                    echo "deploy the image ..."
+                    echo "push event ..."
                     // Start the new Docker container
                     def dockerCmd = "docker run -p 8080:8080 -d pihix/bitvote-app:1.2"
                     //On doit se connecter à dockerhub dans le serveur
