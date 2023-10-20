@@ -42,31 +42,7 @@ pipeline {
         stage("deploy image") {
             steps {
                 script {
-                    // Specify the port you want to check (e.g., 8080)
-                    //def portToCheck = 8080
-                    
-                    // Check if there's a running container on the specified port
-                    //sh "docker ps -q --filter \"publish=8080/tcp\""
-                    
-                    
-                    //echo "A container is running on port ${portToCheck}. Stopping it..."
-                    //sh 'docker stop $(docker ps -q --filter "publish=8080/tcp")'
-                    sh '''
-                        docker ps -q --filter "publish=8080/tcp"
-                        if [ $? -eq 8080 ]; then
-                            echo "Found running containers on port 8080. Stopping them..."
-                            docker stop $(docker ps -q --filter "publish=8080/tcp")
-                        else
-                            echo "No containers found on port 8080."
-                        fi
-                        '''
-
-                    
-                    
-                    echo "deploy the image ..."
-                    echo "push event ..."
-                    // Start the new Docker container
-                    def dockerCmd = "docker run -p 8080:8080 -d pihix/bitvote-app:1.2"
+                    sh "docker compose up -d"
                     //On doit se connecter à dockerhub dans le serveur
                     sshagent(['ec2-dev-server']) {
                         sh "ssh -o StrictHostKeyChecking=no ubuntu@13.39.82.122 ${dockerCmd}"
