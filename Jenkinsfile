@@ -50,7 +50,7 @@ pipeline {
                     
                     
                     //echo "A container is running on port ${portToCheck}. Stopping it..."
-                    sh "docker stop $(docker ps -q --filter \"publish=8080/tcp\")"
+                    sh 'docker stop $(docker ps -q --filter "publish=8080/tcp")'
                     
                     
                     echo "deploy the image ..."
