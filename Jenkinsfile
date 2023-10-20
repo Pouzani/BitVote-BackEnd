@@ -47,10 +47,10 @@ pipeline {
                     def containerName = 'bitvote-container'
 
                     // Stop the previous container if it's running
-                   // sh "ssh -o StrictHostKeyChecking=no ubuntu@13.39.82.122 docker stop ${containerName}"
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@13.39.82.122 docker rm -f ${containerName}"
 
                     // Start the new Docker container
-                    def dockerCmd = "docker run -p 8080:8080 -d --name bitvote-container pihix/bitvote-app:1.3"
+                    def dockerCmd = "docker run -p 8080:8080 -d --name ${containerName} pihix/bitvote-app:1.3"
                     //On doit se connecter à dockerhub dans le serveur
                     sshagent(['ec2-dev-server']) {
                         sh "ssh -o StrictHostKeyChecking=no ubuntu@13.39.82.122 ${dockerCmd}"
