@@ -47,7 +47,7 @@ pipeline {
                     def containerName = 'bitvote-container'
 
                     // Stop the previous container if it's running
-                    sh "ssh -o StrictHostKeyChecking=no ubuntu@13.39.82.122 docker stop ${containerName}"
+                   // sh "ssh -o StrictHostKeyChecking=no ubuntu@13.39.82.122 docker stop ${containerName}"
 
                     // Start the new Docker container
                     def dockerCmd = "docker run -p 8080:8080 -d --name ${containerName} pihix/bitvote-app:1.3"
